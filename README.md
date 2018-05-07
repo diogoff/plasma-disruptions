@@ -7,10 +7,12 @@
 
 ### Instructions
 
-- Run `dst.py` to find all the disruptive pulses and their disruption times.
+- Run `dst_bolo.py` to get the disruption time and bolometer data for every disruptive pulse.
 
     - This script will only run on a JET computing cluster (e.g. Freia).
     
     - The disruption time is defined as the moment when the current gradient reaches 20 MA/s.
 
-    - An output file `dst.txt` will be created with the pulse numbers and disruption times.
+    - The bolometer data is subsampled to 1 kHz.
+
+    - An output file `dst_bolo.hdf` will be created.
