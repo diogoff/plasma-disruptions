@@ -11,7 +11,7 @@
 
     - This script will only run on a JET computing cluster (e.g. Freia).
     
-    - The disruption time is defined as the moment when the current gradient reaches 20 MA/s.
+    - The disruption time is defined as the moment when the current quench reaches 20 MA/s.
 
     - The bolometer data is subsampled to 1 kHz.
 
