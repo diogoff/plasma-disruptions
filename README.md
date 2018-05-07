@@ -1,6 +1,4 @@
-# Under construction
-
-## A Recurrent Neural Network for Disruption Prediction
+# A Recurrent Neural Network for Disruption Prediction
 
 ### Requirements
 
