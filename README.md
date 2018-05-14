@@ -24,6 +24,18 @@ This repository contains neural networks to predict disruptions from bolometer d
 
     - An output file `dst_bolo.hdf` will be created.
 
+- Run `model_train.py` to train the model.
+
+    - Before running this script, set the number of GPUs and the batch size accordingly.
+
+    - Training will finish automatically once the validation loss no longer improves.
+    
+    - The best model parameters will be saved in `model_weights.hdf`.
+
+- During training, run `plot_loss.py` to see how the loss and validation loss are evolving.
+
+    - The script will indicate the epoch where the minimum validation loss was achieved.
+
 ### Disruption probability
 
 - Run `bolo_data.py` to get the bolometer data for every pulse.
