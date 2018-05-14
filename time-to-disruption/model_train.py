@@ -3,7 +3,6 @@ from __future__ import print_function
 import h5py
 import numpy as np
 np.random.seed(0)
-from tqdm import tqdm
 
 # ----------------------------------------------------------------------
 
@@ -18,13 +17,13 @@ bolo_t = dict()
 train_pulses = []
 valid_pulses = []
 
-for (i, pulse) in tqdm(enumerate(f)):
+for (i, pulse) in enumerate(f):
     if (i+1) % 10 != 0:
         train_pulses.append(pulse)
     else:
         valid_pulses.append(pulse)
     dst[pulse] = f[pulse]['dst'][0]
-    bolo[pulse] = f[pulse]['bolo'][:]
+    bolo[pulse] = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
     bolo_t[pulse] = f[pulse]['bolo_t'][:]
 
 f.close()
@@ -34,7 +33,10 @@ print('valid_pulses:', len(valid_pulses))
 
 # ----------------------------------------------------------------------
 
-def generator(pulses, sample_size, batch_size):
+sample_size = 200
+batch_size = 1024
+
+def generator(pulses):
     X_batch = []
     Y_batch = []
     while True:
@@ -71,14 +73,10 @@ from model import *
 from keras.utils import *
 from keras.optimizers import *
 
-sample_size = 200
-
 with tf.device('/cpu:0'):
     model = create_model(sample_size)
 
-gpus = 8
-
-parallel_model = multi_gpu_model(model, gpus=gpus)
+parallel_model = multi_gpu_model(model, gpus=8)
 
 opt = Adam(lr=1e-4)
 
@@ -125,18 +123,15 @@ class MyCallback(Callback):
 
 # ----------------------------------------------------------------------
 
-batch_size = 1000 * gpus
-
-train_generator = generator(train_pulses, sample_size, batch_size)
-valid_generator = generator(valid_pulses, sample_size, batch_size)
-
 try:
-    parallel_model.fit_generator(train_generator,
+    parallel_model.fit_generator(generator(train_pulses),
                                  steps_per_epoch=100,
                                  epochs=100000,
-                                 verbose=1,
+                                 verbose=0,
                                  callbacks=[MyCallback()],
-                                 validation_data=valid_generator,
-                                 validation_steps=10)
+                                 validation_data=generator(valid_pulses),
+                                 validation_steps=10,
+                                 workers=8,
+                                 use_multiprocessing=True)
 except KeyboardInterrupt:
-    print('Training interrupted.')
+    print('\nTraining interrupted.')
