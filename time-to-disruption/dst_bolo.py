@@ -16,6 +16,17 @@ def get_data(pulse, dda, dtyp):
         raise ValueError
     return data, t
 
+def get_ipla(pulse):
+    return get_data(pulse, 'magn', 'ipla')
+
+def get_bolo(pulse):
+    kb5h, kb5h_t = get_data(pulse, 'bolo', 'kb5h')
+    kb5v, kb5v_t = get_data(pulse, 'bolo', 'kb5v')
+    assert np.all(kb5h_t == kb5v_t)
+    bolo = np.hstack((kb5h, kb5v))
+    bolo_t = kb5h_t
+    return bolo, bolo_t
+
 # -------------------------------------------------------------------------------------
 
 def get_dst(ipla, ipla_t):
@@ -59,15 +70,9 @@ for pulse in range(pulse0, pulse1+1):
         continue
 
     try:
-        kb5h, kb5h_t = get_data(pulse, 'bolo', 'kb5h')
-        kb5v, kb5v_t = get_data(pulse, 'bolo', 'kb5v')
+        bolo, bolo_t = get_bolo(pulse)
     except ValueError:
-        print('%10s %10.4f %10s' % (pulse, dst, 'no bolo'))
         continue
-    
-    assert np.all(kb5h_t == kb5v_t)
-    bolo = np.hstack((kb5h, kb5v))
-    bolo_t = kb5h_t
     
     t = 40.
     i = np.argmin(np.fabs(bolo_t - t))
@@ -76,13 +81,12 @@ for pulse in range(pulse0, pulse1+1):
 
     step = round(np.mean(bolo_t[1:] - bolo_t[:-1]), 4)
 
-    n = int(round(0.001/step))
+    n = int(round(0.005/step))
     bolo = np.cumsum(bolo, axis=0)
     bolo = (bolo[n:] - bolo[:-n]) / n
     bolo = bolo[::n]
     bolo_t = bolo_t[n/2+1::n]
     bolo_t = bolo_t[:bolo.shape[0]]
-    assert bolo.shape[0] == bolo_t.shape[0]
 
     g = f.create_group(str(pulse))
     g.create_dataset('dst', data=[dst])
