@@ -18,32 +18,36 @@ train_pulses = []
 valid_pulses = []
 
 k = 0
-for pulse in f:
-    t = f[pulse]['dst'][0]
-    if t > 0.:
-        dst[pulse] = t
-        bolo[pulse] = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
-        bolo_t[pulse] = f[pulse]['bolo_t'][:]
-        k += 1
-        if k % 10 != 0:
-            train_pulses.append(pulse)
-            print('%10s %10.4f %10.4f %10.4f %10d' % (pulse,
-                                                      dst[pulse],
-                                                      bolo_t[pulse][0],
-                                                      bolo_t[pulse][-1],
-                                                      bolo_t[pulse].shape[0]))
-        else:
-            valid_pulses.append(pulse)
-            print('%10s %10.4f %10.4f %10.4f %10d *' % (pulse,
-                                                        dst[pulse],
-                                                        bolo_t[pulse][0],
-                                                        bolo_t[pulse][-1],
-                                                        bolo_t[pulse].shape[0]))
+for (i, pulse) in enumerate(f):
+    dst[pulse] = f[pulse]['dst'][0]
+    bolo[pulse] = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
+    bolo_t[pulse] = f[pulse]['bolo_t'][:]
+    k += 1
+    if k % 10 != 0:
+        train_pulses.append(pulse)
+        print('%10s %10.4f %10.4f %10.4f %10d' % (pulse,
+                                                  dst[pulse],
+                                                  bolo_t[pulse][0],
+                                                  bolo_t[pulse][-1],
+                                                  bolo_t[pulse].shape[0]))
+    else:
+        valid_pulses.append(pulse)
+        print('%10s %10.4f %10.4f %10.4f %10d *' % (pulse,
+                                                    dst[pulse],
+                                                    bolo_t[pulse][0],
+                                                    bolo_t[pulse][-1],
+                                                    bolo_t[pulse].shape[0]))
 
 f.close()
 
-print('train_pulses:', len(train_pulses))
-print('valid_pulses:', len(valid_pulses))
+n1 = len(train_pulses)
+n2 = len([pulse for pulse in train_pulses if dst[pulse] > 0.])
+
+n3 = len(valid_pulses)
+n4 = len([pulse for pulse in valid_pulses if dst[pulse] > 0.])
+
+print('train_pulses: %4d' % n1, 'disruptions: %4d (%.2f%%)' % (n2, float(n2)/float(n1)*100.))
+print('valid_pulses: %4d' % n3, 'disruptions: %4d (%.2f%%)' % (n4, float(n4)/float(n3)*100.))
 
 # ----------------------------------------------------------------------
 
@@ -61,7 +65,7 @@ def generator(pulses):
         if i < sample_size:
             continue
         x = bolo[pulse][i-sample_size+1:i+1]
-        y = dst[pulse] - bolo_t[pulse][i]
+        y = 1. if dst[pulse] > 0. else 0.
         X_batch.append(x)
         Y_batch.append(y)
         if len(X_batch) >= batch_size:
@@ -94,7 +98,7 @@ parallel_model = multi_gpu_model(model, gpus=8)
 
 opt = Adam(lr=1e-4)
 
-parallel_model.compile(optimizer=opt, loss='mae')
+parallel_model.compile(optimizer=opt, loss='binary_crossentropy')
 
 # ----------------------------------------------------------------------
 
