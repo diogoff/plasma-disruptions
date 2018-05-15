@@ -6,7 +6,7 @@ np.random.seed(0)
 
 # ----------------------------------------------------------------------
 
-fname = 'dst_bolo.hdf'
+fname = '../dst_bolo.hdf'
 print('Reading:', fname)
 f = h5py.File(fname, 'r')
 
@@ -17,14 +17,28 @@ bolo_t = dict()
 train_pulses = []
 valid_pulses = []
 
-for (i, pulse) in enumerate(f):
-    if (i+1) % 10 != 0:
-        train_pulses.append(pulse)
-    else:
-        valid_pulses.append(pulse)
-    dst[pulse] = f[pulse]['dst'][0]
-    bolo[pulse] = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
-    bolo_t[pulse] = f[pulse]['bolo_t'][:]
+k = 0
+for pulse in f:
+    t = f[pulse]['dst'][0]
+    if t > 0.:
+        dst[pulse] = t
+        bolo[pulse] = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
+        bolo_t[pulse] = f[pulse]['bolo_t'][:]
+        k += 1
+        if k % 10 != 0:
+            train_pulses.append(pulse)
+            print('%10s %10.4f %10.4f %10.4f %10d' % (pulse,
+                                                      dst[pulse],
+                                                      bolo_t[pulse][0],
+                                                      bolo_t[pulse][-1],
+                                                      bolo_t[pulse].shape[0]))
+        else:
+            valid_pulses.append(pulse)
+            print('%10s %10.4f %10.4f %10.4f %10d *' % (pulse,
+                                                        dst[pulse],
+                                                        bolo_t[pulse][0],
+                                                        bolo_t[pulse][-1],
+                                                        bolo_t[pulse].shape[0]))
 
 f.close()
 
@@ -130,7 +144,7 @@ try:
                                  verbose=0,
                                  callbacks=[MyCallback()],
                                  validation_data=generator(valid_pulses),
-                                 validation_steps=10,
+                                 validation_steps=100,
                                  workers=8,
                                  use_multiprocessing=True)
 except KeyboardInterrupt:
