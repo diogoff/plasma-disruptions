@@ -33,3 +33,4 @@ This repository contains neural networks to predict disruptions from bolometer d
 - During training, run `plot_loss.py` to see how the loss and validation loss are evolving.
 
     - The script will indicate the epoch where the minimum validation loss was achieved.
+
