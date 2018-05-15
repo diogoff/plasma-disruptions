@@ -61,12 +61,13 @@ f = h5py.File(fname, 'w')
 
 for pulse in range(pulse0, pulse1+1):
     try:
-        ipla, ipla_t = get_data(pulse, 'magn', 'ipla')
-        dst = get_dst(ipla, ipla_t)
+        ipla, ipla_t = get_ipla(pulse)
         bolo, bolo_t = get_bolo(pulse)
     except ValueError:
         continue
-        
+
+    dst = get_dst(ipla, ipla_t)
+
     t = 40.
     i = np.argmin(np.fabs(bolo_t - t))
     bolo = bolo[i:]
