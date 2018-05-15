@@ -16,7 +16,7 @@ This repository contains neural networks to predict disruptions from bolometer d
 
     - This script will only run on a JET computing cluster (e.g. Freia).
     
-    - The disruption time is defined as the moment when the current gradient reaches 20 MA/s. The disruption time for non-disruptive pulses is zero.
+    - The disruption time is defined as the moment when the current gradient reaches 20 MA/s. For non-disruptive pulses, the disruption time is zero.
 
     - The bolometer data is down-sampled from 5 kHz to 200 Hz (1 sample every 5 ms).
 
