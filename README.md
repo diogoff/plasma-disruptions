@@ -26,10 +26,10 @@ This repository contains a neural network to predict disruptions from bolometer 
 
     - Training will finish automatically once the validation loss no longer improves.
     
-    - The model and weights will be saved to `model.hdf`.
+    - The model and its weights will be saved to `model.hdf`.
     
     - A log file with the loss and validation loss will be saved to `train.log`.
 
-- During (or after) training, run `plot_train.py` to plot the loss and validation loss per epoch.
+- During (or after) training, run `plot_train.py` to plot the loss and validation loss.
 
-    - The script will indicate the epoch where the minimum validation loss was achieved.
+    - The script will also indicate the epoch where the minimum validation loss was achieved.
