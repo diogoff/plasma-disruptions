@@ -22,6 +22,8 @@ This repository contains a neural network to predict disruptions from bolometer 
 
     - An output file `dst_bolo.hdf` will be created.
 
+- Depending on the desired prediction (either time to disruption or probability of disruption), change to the corresponding directory (`ttd` or `pd`, respectively).
+
 - Run `model_train.py` to train the model.
 
     - Training will finish automatically once the validation loss no longer improves.
