@@ -4,7 +4,7 @@ This repository contains neural networks to predict disruptions from bolometer d
 
 * Time to disruption: predicts the remaining time towards an impending disruption. This network is trained on disruptive pulses only.
 
-* Disruption probability: predicts whether the current pulse is disruptive or not. This network is trained on both disruptive and non-disruptive pulses.
+* Probability of disruption: predicts whether the current pulse is disruptive or not. This network is trained on both disruptive and non-disruptive pulses.
 
 ## Requirements
 
