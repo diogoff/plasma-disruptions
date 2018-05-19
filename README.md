@@ -38,4 +38,4 @@ This repository contains a neural network to predict disruptions from bolometer 
 
     - This script will plot the time to disruption (_ttd_) and the probability of disruption (_pd_) for each validation pulse.
     
-    - Each plot will be saved in a separate `<pulse>.png` file. Disruptive pulses are marked as `<pulse>_<disruption time>.png`.
+    - Each plot will be saved in a separate `<pulse>.png` file. Disruptive pulses are marked as `<pulse>_<disruption-time>.png`.
