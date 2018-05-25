@@ -36,7 +36,7 @@ This repository contains a neural network to predict disruptions from bolometer 
 
 - During training, run `plot_train.py` to see how the loss and validation loss are evolving.
 
-    - The plot will be saved to a PNG file rather than being displayed on the screen.
+    - The plot will be saved to a PNG file rather than being displayed on screen.
 
     - The script will also indicate the epoch where the minimum validation loss was achieved.
 
