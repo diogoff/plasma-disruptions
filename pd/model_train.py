@@ -3,6 +3,15 @@ from __future__ import print_function
 import h5py
 import numpy as np
 np.random.seed(0)
+import pandas as pd
+
+# ----------------------------------------------------------------------
+
+fname = '../valid_pulses.txt'
+print('Reading:', fname)
+df = pd.read_csv(fname, sep=' ', dtype={'pulse': str, 'valid': str})
+
+df.set_index('pulse', inplace=True)
 
 # ----------------------------------------------------------------------
 
@@ -17,7 +26,7 @@ bolo_t = dict()
 train_pulses = []
 valid_pulses = []
 
-for (i, pulse) in enumerate(f):
+for pulse in f:
     dst[pulse] = f[pulse]['dst'][0]
     bolo[pulse] = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
     bolo_t[pulse] = f[pulse]['bolo_t'][:]
@@ -26,7 +35,7 @@ for (i, pulse) in enumerate(f):
                                                 bolo_t[pulse][0],
                                                 bolo_t[pulse][-1],
                                                 bolo_t[pulse].shape[0]), end='')
-    if (i+1) % 10 != 0:
+    if pd.isnull(df.loc[pulse,'valid']):
         train_pulses.append(pulse)
     else:
         valid_pulses.append(pulse)
