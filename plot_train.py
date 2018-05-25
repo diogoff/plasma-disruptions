@@ -59,3 +59,6 @@ for fname in glob.glob('*/train.log'):
     fname = 'plot_train_%s_%d_%g.png' % (fname.split('/')[0], min_epoch, min_val_loss)
     print('Writing:', fname)
     plt.savefig(fname)
+    plt.cla()
+    plt.clf()
+    plt.close()        
