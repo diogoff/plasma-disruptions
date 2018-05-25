@@ -26,7 +26,7 @@ This repository contains a neural network to predict disruptions from bolometer 
 
     - Pulses with an asterisk (`*`) or any other string in the second column will be used for validation. Other pulses will be used for training.
 
-- Run `model_train.py` on each folder (`ttd` and `pd`) to train the corresponding model.
+- Run `model_train.py` on each folder (`ttd` and `prd`) to train the corresponding model.
 
     - Training will finish automatically once the validation loss no longer improves.
     
@@ -40,6 +40,6 @@ This repository contains a neural network to predict disruptions from bolometer 
 
 - After training both models, run `model_validate.py` to test the models on the validation set.
 
-    - This script will plot the time to disruption (_ttd_) and the probability of disruption (_pd_) for each validation pulse.
+    - This script will plot the time to disruption (_ttd_) and the probability of disruption (_prd_) for each validation pulse.
     
     - Each plot will be saved in a separate `<pulse>.png` file. Disruptive pulses are marked as `<pulse>_<disruption-time>.png`.

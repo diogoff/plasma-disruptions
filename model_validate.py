@@ -3,6 +3,9 @@ from __future__ import print_function
 import glob
 import h5py
 import numpy as np
+import pandas as pd
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 # ----------------------------------------------------------------------
@@ -19,13 +22,21 @@ set_session(session)
 
 from keras.models import *
 
+fname = 'prd/model.hdf'
+print('Reading:', fname)
+prd = load_model(fname)
+
 fname = 'ttd/model.hdf'
 print('Reading:', fname)
 ttd = load_model(fname)
 
-fname = 'pd/model.hdf'
+# ----------------------------------------------------------------------
+
+fname = 'valid_pulses.txt'
 print('Reading:', fname)
-pd = load_model(fname)
+df = pd.read_csv(fname, sep=' ', dtype={'pulse': str, 'valid': str})
+
+df.set_index('pulse', inplace=True)
 
 # ----------------------------------------------------------------------
 
@@ -35,8 +46,8 @@ f = h5py.File(fname, 'r')
 
 sample_size = 200
 
-for (i, pulse) in enumerate(f):
-    if (i+1) % 10 == 0:
+for pulse in f:
+    if pd.isnull(df.loc[pulse,'valid']):
         dst = f[pulse]['dst'][0]
         bolo = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
         bolo_t = f[pulse]['bolo_t'][:]
@@ -54,8 +65,8 @@ for (i, pulse) in enumerate(f):
             t_batch.append(t)
         X_batch = np.array(X_batch, dtype=np.float32)
         t_batch = np.array(t_batch, dtype=np.float32)
+        prd_batch = prd.predict(X_batch, batch_size=X_batch.shape[0], verbose=0)
         ttd_batch = ttd.predict(X_batch, batch_size=X_batch.shape[0], verbose=0)
-        pd_batch = pd.predict(X_batch, batch_size=X_batch.shape[0], verbose=0)
 
         fig, ax1 = plt.subplots()
 
@@ -66,8 +77,8 @@ for (i, pulse) in enumerate(f):
         ax1.set_ylim(0.)
 
         ax2 = ax1.twinx()
-        ax2.plot(t_batch, pd_batch, 'r')
-        ax2.set_ylabel('pd', color='r')
+        ax2.plot(t_batch, prd_batch, 'r')
+        ax2.set_ylabel('prd', color='r')
         ax2.tick_params('y', colors='r')
         ax2.set_ylim(0., 1.)
 
