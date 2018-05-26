@@ -49,7 +49,7 @@ print('valid_pulses:', len(valid_pulses))
 # ----------------------------------------------------------------------
 
 sample_size = 200
-batch_size = 2000
+batch_size = 4000
 
 def generator(pulses):
     X_batch = []
@@ -71,16 +71,6 @@ def generator(pulses):
             yield (X_batch, Y_batch)
             X_batch = []
             Y_batch = []
-
-# ----------------------------------------------------------------------
-
-import tensorflow as tf
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-session = tf.Session(config=config)
-
-from keras.backend.tensorflow_backend import set_session
-set_session(session)
 
 # ----------------------------------------------------------------------
 
