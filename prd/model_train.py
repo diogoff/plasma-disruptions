@@ -147,7 +147,8 @@ try:
                         callbacks=[MyCallback()],
                         validation_data=generator(valid_pulses),
                         validation_steps=10,
-                        workers=4,
+                        max_queue_size=100,
+                        workers=8,
                         use_multiprocessing=True)
 except KeyboardInterrupt:
     print('\nTraining interrupted.')
