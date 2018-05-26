@@ -33,7 +33,7 @@ for fname in glob.glob('*/train.log'):
     plt.plot(epoch, val_loss, 'r', label='val_loss', linewidth=linewidth)
 
     plt.xlabel('epoch')
-    plt.ylabel('(s)')
+    plt.ylabel('')
 
     plt.legend()
 

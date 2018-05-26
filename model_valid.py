@@ -10,16 +10,6 @@ import matplotlib.pyplot as plt
 
 # ----------------------------------------------------------------------
 
-import tensorflow as tf
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-session = tf.Session(config=config)
-
-from keras.backend.tensorflow_backend import set_session
-set_session(session)
-
-# ----------------------------------------------------------------------
-
 from keras.models import *
 
 fname = 'prd/model.hdf'
@@ -47,7 +37,7 @@ f = h5py.File(fname, 'r')
 sample_size = 200
 
 for pulse in f:
-    if pd.isnull(df.loc[pulse,'valid']):
+    if not pd.isnull(df.loc[pulse,'valid']):
         dst = f[pulse]['dst'][0]
         bolo = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
         bolo_t = f[pulse]['bolo_t'][:]

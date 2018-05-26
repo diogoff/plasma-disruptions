@@ -42,7 +42,7 @@ This repository contains a neural network to predict disruptions from bolometer 
 
     - The script will also indicate the epoch where the minimum validation loss was achieved.
 
-- After training both models, run `model_validate.py` to test the models on the validation set.
+- After training both models, run `model_valid.py` to test the models on the validation set.
 
     - This script will plot the time to disruption and the probability of disruption for each validation pulse.
     
