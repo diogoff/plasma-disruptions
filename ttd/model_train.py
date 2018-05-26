@@ -90,7 +90,7 @@ model.add(MaxPooling1D())
 model.add(Conv1D(128, 5, activation='relu'))
 model.add(MaxPooling1D())
 
-model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
+model.add(LSTM(128, dropout=0.5, recurrent_dropout=0.5))
 
 model.add(Dense(1))
 
@@ -143,10 +143,12 @@ class MyCallback(Callback):
 try:
     model.fit_generator(generator(train_pulses),
                         steps_per_epoch=100,
-                        epochs=10000,
+                        epochs=20000,
                         verbose=0,
                         callbacks=[MyCallback()],
                         validation_data=generator(valid_pulses),
-                        validation_steps=10)
+                        validation_steps=10,
+                        workers=4,
+                        use_multiprocessing=True)
 except KeyboardInterrupt:
     print('\nTraining interrupted.')
