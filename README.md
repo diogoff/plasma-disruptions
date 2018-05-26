@@ -2,13 +2,13 @@
 
 This repository contains a neural network to predict disruptions from bolometer data in two different ways:
 
-* Time to disruption: predicts the remaining time towards an impending disruption. In this case, the model is trained on disruptive pulses only.
+* Time to disruption (`ttd`): predicts the remaining time towards an impending disruption. In this case, the model is trained on disruptive pulses only.
 
-* Probability of disruption: predicts whether the current pulse is disruptive or not. In this case, the model is trained on both disruptive and non-disruptive pulses.
+* Probability of disruption (`prd`): predicts whether the a pulse is disruptive or not. In this case, the model is trained on both disruptive and non-disruptive pulses.
 
 ## Requirements
 
-- Keras, TensorFlow
+- Keras
 
 ## Instructions
 
@@ -16,7 +16,7 @@ This repository contains a neural network to predict disruptions from bolometer 
 
     - This script will only run on a JET computing cluster (e.g. Freia).
     
-    - The disruption time is defined as the moment when the current gradient reaches 20 MA/s. For non-disruptive pulses, the disruption time is defined as zero.
+    - The disruption time is defined as the moment when the current gradient reaches 20 MA/s. For non-disruptive pulses, the disruption time is zero.
 
     - The bolometer data is down-sampled from 5 kHz to 200 Hz (1 sample every 5 ms).
 
@@ -24,7 +24,9 @@ This repository contains a neural network to predict disruptions from bolometer 
 
 - Use `valid_pulses.txt` to select the pulses that should be used for validation.
 
-    - Pulses with an asterisk (`*`) or any other string in the second column will be used for validation. Other pulses will be used for training.
+    - Pulses with an asterisk (`*`) in the second column will be used for validation.
+    
+    - The remaining pulses will be used for training.
 
 - Run `model_train.py` on each folder (`ttd` and `prd`) to train the corresponding model.
 
@@ -36,12 +38,12 @@ This repository contains a neural network to predict disruptions from bolometer 
 
 - During training, run `plot_train.py` to see how the loss and validation loss are evolving.
 
-    - The plot will be saved to a PNG file rather than being displayed on screen.
+    - The plot will be saved as a PNG file rather than being displayed on screen.
 
     - The script will also indicate the epoch where the minimum validation loss was achieved.
 
 - After training both models, run `model_validate.py` to test the models on the validation set.
 
-    - This script will plot the time to disruption (_ttd_) and the probability of disruption (_prd_) for each validation pulse.
+    - This script will plot the time to disruption and the probability of disruption for each validation pulse.
     
-    - Each plot will be saved in a separate `<pulse>.png` file. Disruptive pulses are marked as `<pulse>_<disruption-time>.png`.
+    - Each plot will be saved in a separate PNG file. Disruptive pulses are marked with the disruption time.
