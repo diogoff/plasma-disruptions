@@ -2,8 +2,6 @@ from __future__ import print_function
 
 import glob
 import numpy as np
-import matplotlib
-matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 for fname in glob.glob('*/train.log'):
@@ -55,10 +53,4 @@ for fname in glob.glob('*/train.log'):
     plt.ylim(y_min, y_max)
 
     plt.tight_layout()
-    
-    fname = 'plot_train_%s_%d_%g.png' % (fname.split('/')[0], min_epoch, min_val_loss)
-    print('Writing:', fname)
-    plt.savefig(fname)
-    plt.cla()
-    plt.clf()
-    plt.close()        
+    plt.show()

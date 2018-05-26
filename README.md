@@ -6,10 +6,6 @@ This repository contains a neural network to predict disruptions from bolometer 
 
 * Probability of disruption (`prd`): predicts whether the a pulse is disruptive or not. In this case, the model is trained on both disruptive and non-disruptive pulses.
 
-## Requirements
-
-- Keras
-
 ## Instructions
 
 - Run `dst_bolo.py` to get the disruption time and bolometer data for every pulse.
@@ -37,8 +33,6 @@ This repository contains a neural network to predict disruptions from bolometer 
     - A log file with the loss and validation loss will be saved to `train.log`.
 
 - During training, run `plot_train.py` to see how the loss and validation loss are evolving.
-
-    - The plot will be saved as a PNG file rather than being displayed on screen.
 
     - The script will also indicate the epoch where the minimum validation loss was achieved.
 
