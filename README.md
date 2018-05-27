@@ -8,7 +8,7 @@ This repository contains a neural network to predict disruptions from bolometer 
 
 ## Requirements
 
-- Keras with Theano^*^ or TensorFlow backend
+- Keras with Theano or TensorFlow backend
 
 ## Instructions
 
@@ -45,5 +45,3 @@ This repository contains a neural network to predict disruptions from bolometer 
     - This script will plot the time to disruption and the probability of disruption for each validation pulse.
     
     - Each plot will be saved in a separate PNG file. Disruptive pulses are marked with the disruption time.
-
-^*^ Yes, Theano is not dead, and it can still be faster than TensorFlow on some tasks.
