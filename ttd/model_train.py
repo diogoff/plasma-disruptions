@@ -50,7 +50,7 @@ print('valid_pulses:', len(valid_pulses))
 # ----------------------------------------------------------------------
 
 sample_size = 200
-batch_size = 4000
+batch_size = 2000
 
 def generator(pulses):
     X_batch = []
