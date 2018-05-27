@@ -1,4 +1,4 @@
-# A Recurrent Neural Network for Disruption Prediction
+## A Recurrent Neural Network for Disruption Prediction
 
 This repository contains a neural network to predict disruptions from bolometer data in two different ways:
 
@@ -6,11 +6,11 @@ This repository contains a neural network to predict disruptions from bolometer 
 
 * Probability of disruption (`prd`): predicts whether the a pulse is disruptive or not. In this case, the model is trained on both disruptive and non-disruptive pulses.
 
-## Requirements
+### Requirements
 
 - Keras, with Theano or TensorFlow backend
 
-## Instructions
+### Instructions
 
 - Run `dst_bolo.py` to get the disruption time and bolometer data for every pulse.
 
