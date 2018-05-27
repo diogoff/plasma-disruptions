@@ -6,6 +6,10 @@ This repository contains a neural network to predict disruptions from bolometer 
 
 * Probability of disruption (`prd`): predicts whether the a pulse is disruptive or not. In this case, the model is trained on both disruptive and non-disruptive pulses.
 
+## Requirements
+
+- Keras with Theano^*^ or TensorFlow backend
+
 ## Instructions
 
 - Run `dst_bolo.py` to get the disruption time and bolometer data for every pulse.
@@ -41,3 +45,5 @@ This repository contains a neural network to predict disruptions from bolometer 
     - This script will plot the time to disruption and the probability of disruption for each validation pulse.
     
     - Each plot will be saved in a separate PNG file. Disruptive pulses are marked with the disruption time.
+
+^*^ Yes, Theano is not dead, and it can still be faster than TensorFlow on some tasks.
