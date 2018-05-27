@@ -8,7 +8,7 @@ This repository contains a neural network to predict disruptions from bolometer 
 
 ## Requirements
 
-- Keras with Theano or TensorFlow backend
+- Keras, with Theano or TensorFlow backend
 
 ## Instructions
 
