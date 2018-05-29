@@ -86,10 +86,7 @@ model.add(MaxPooling1D())
 model.add(Conv1D(64, 5, activation='relu'))
 model.add(MaxPooling1D())
 
-model.add(Conv1D(128, 5, activation='relu'))
-model.add(MaxPooling1D())
-
-model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
+model.add(LSTM(64))
 
 model.add(Dense(1, activation='sigmoid'))
 
