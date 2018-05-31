@@ -3,15 +3,6 @@ from __future__ import print_function
 import h5py
 import numpy as np
 np.random.seed(0)
-import pandas as pd
-
-# ----------------------------------------------------------------------
-
-fname = '../valid_pulses.txt'
-print('Reading:', fname)
-df = pd.read_csv(fname, sep=' ', dtype={'pulse': str, 'valid': str})
-
-df.set_index('pulse', inplace=True)
 
 # ----------------------------------------------------------------------
 
@@ -35,7 +26,7 @@ for pulse in f:
                                                 bolo_t[pulse][0],
                                                 bolo_t[pulse][-1],
                                                 bolo_t[pulse].shape[0]), end='')
-    if pd.isnull(df.loc[pulse,'valid']):
+    if int(pulse) < 91368:
         train_pulses.append(pulse)
     else:
         valid_pulses.append(pulse)
@@ -86,7 +77,10 @@ model.add(MaxPooling1D())
 model.add(Conv1D(64, 5, activation='relu'))
 model.add(MaxPooling1D())
 
-model.add(LSTM(64))
+model.add(Conv1D(128, 5, activation='relu'))
+model.add(MaxPooling1D())
+
+model.add(LSTM(128))
 
 model.add(Dense(1, activation='sigmoid'))
 
