@@ -17,7 +17,7 @@ bolo_t = dict()
 train_pulses = []
 valid_pulses = []
 
-for pulse in f:
+for (k, pulse) in enumerate(f):
     dst[pulse] = f[pulse]['dst'][0]
     bolo[pulse] = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
     bolo_t[pulse] = f[pulse]['bolo_t'][:]
@@ -26,7 +26,7 @@ for pulse in f:
                                                 bolo_t[pulse][0],
                                                 bolo_t[pulse][-1],
                                                 bolo_t[pulse].shape[0]), end='')
-    if int(pulse) < 91368:
+    if (k+1) % 10 != 0:
         train_pulses.append(pulse)
     else:
         valid_pulses.append(pulse)

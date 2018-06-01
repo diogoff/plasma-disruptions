@@ -27,9 +27,9 @@ f = h5py.File(fname, 'r')
 
 sample_size = 200
 
-for pulse in f:
+for (k, pulse) in enumerate(f):
 
-    if int(pulse) < 91368:
+    if (k+1) % 10 != 0:
         continue
 
     dst = f[pulse]['dst'][0]
