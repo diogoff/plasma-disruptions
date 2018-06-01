@@ -26,10 +26,10 @@ for (k, pulse) in enumerate(f):
                                                 bolo_t[pulse][0],
                                                 bolo_t[pulse][-1],
                                                 bolo_t[pulse].shape[0]), end='')
-    if (k+1) % 10 != 0:
-        train_pulses.append(pulse)
-    else:
+    if k % 10 == 0:
         valid_pulses.append(pulse)
+    else:
+        train_pulses.append(pulse)
 print()
 
 f.close()
