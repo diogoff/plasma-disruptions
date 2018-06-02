@@ -68,10 +68,10 @@ for (k, pulse) in enumerate(f):
         if dst > 0.:
             plt.axvline(x=dst, color='k', linestyle='--')
             plt.title('pulse %s (disruption @ t=%.4fs)' % (pulse, dst))
-            fname = '%s_%.4f.png' % (pulse, dst)
+            fname = 'images/%s_%.4f.png' % (pulse, dst)
         else:
             plt.title('pulse %s' % pulse)
-            fname = '%s.png' % pulse
+            fname = 'images/%s.png' % pulse
 
         plt.savefig(fname)
         plt.cla()
