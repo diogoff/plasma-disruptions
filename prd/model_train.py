@@ -32,13 +32,14 @@ f.close()
 
 # ----------------------------------------------------------------------
 
-r = np.arange(len(pulses))
+train_pulses = []
+valid_pulses = []
 
-i_train = ((r % 10) != 0)
-i_valid = ((r % 10) == 0)
-
-train_pulses = pulses[i_train]
-valid_pulses = pulses[i_valid]
+for (i, pulse) in enumerate(pulses):
+    if i % 10 != 0:
+        train_pulses.append(pulse)
+    else:
+        valid_pulses.append(pulse)
 
 print('train_pulses:', len(train_pulses))
 print('valid_pulses:', len(valid_pulses))
