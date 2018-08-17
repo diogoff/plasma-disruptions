@@ -22,12 +22,6 @@ This repository contains a neural network to predict disruptions from bolometer 
 
     - An output file `dst_bolo.hdf` will be created.
 
-- Use `valid_pulses.txt` to select the pulses that should be used for validation.
-
-    - Pulses with an asterisk (`*`) in the second column will be used for validation.
-    
-    - The remaining pulses will be used for training.
-
 - Run `model_train.py` on each folder (`ttd` and `prd`) to train the corresponding model.
 
     - Training will finish automatically once the validation loss no longer improves.
