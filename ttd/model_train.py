@@ -14,9 +14,10 @@ dst = dict()
 bolo = dict()
 bolo_t = dict()
 
-pulses = []
+train_pulses = []
+valid_pulses = []
 
-for pulse in f:
+for (k, pulse) in enumerate(f):
     if f[pulse]['dst'][0] > 0.:
         dst[pulse] = f[pulse]['dst'][0]
         bolo[pulse] = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
@@ -26,21 +27,13 @@ for pulse in f:
                                                     bolo_t[pulse][0],
                                                     bolo_t[pulse][-1],
                                                     bolo_t[pulse].shape[0]), end='')
-        pulses.append(pulse)
+        if k % 10 == 0:
+            valid_pulses.append(pulse)
+        else:
+            train_pulses.append(pulse)
 print()
 
 f.close()
-
-# ----------------------------------------------------------------------
-
-train_pulses = []
-valid_pulses = []
-
-for (i, pulse) in enumerate(pulses):
-    if i % 10 != 0:
-        train_pulses.append(pulse)
-    else:
-        valid_pulses.append(pulse)
 
 print('train_pulses:', len(train_pulses))
 print('valid_pulses:', len(valid_pulses))
