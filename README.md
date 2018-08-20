@@ -1,6 +1,6 @@
-## A Recurrent Neural Network for Disruption Prediction
+## Recurrent Neural Networks for Disruption Prediction
 
-This repository contains a neural network to predict disruptions from bolometer data in two different ways:
+This repository contains neural networks to predict disruptions from bolometer data in two different ways:
 
 * Time to disruption (`ttd`): predicts the remaining time towards an impending disruption. In this case, the model is trained on disruptive pulses only.
 
