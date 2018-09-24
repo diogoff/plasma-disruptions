@@ -38,7 +38,7 @@ for (k, pulse) in enumerate(f):
                                                   dst,
                                                   bolo_t[0],
                                                   bolo_t[-1],
-                                                  bolo_t.shape[0]))
+                                                  bolo_t.shape[0]), end='\t\t')
         X_batch = []
         t_batch = []
         for i in range(sample_size, bolo.shape[0]):
@@ -68,11 +68,12 @@ for (k, pulse) in enumerate(f):
         if dst > 0.:
             plt.axvline(x=dst, color='k', linestyle='--')
             plt.title('pulse %s (disruption @ t=%.4fs)' % (pulse, dst))
-            fname = 'images/%s_%.4f.png' % (pulse, dst)
+            fname = 'images/disruptive/%s_%.4f.png' % (pulse, dst)
         else:
             plt.title('pulse %s' % pulse)
-            fname = 'images/%s.png' % pulse
+            fname = 'images/non-disruptive/%s.png' % pulse
 
+        print('Writing:', fname)
         plt.savefig(fname)
         plt.cla()
         plt.clf()
