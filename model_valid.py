@@ -1,11 +1,23 @@
 from __future__ import print_function
 
+import os
 import glob
 import h5py
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+
+# ----------------------------------------------------------------------
+
+dirs = ['images',
+        os.path.join('images', 'disruptive'),
+        os.path.join('images', 'non-disruptive')]
+        
+for d in dirs:
+    if not os.path.isdir(d):
+        print('Creating:', d)
+        os.mkdir(d)
 
 # ----------------------------------------------------------------------
 
