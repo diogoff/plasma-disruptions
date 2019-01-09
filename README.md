@@ -8,7 +8,19 @@ This repository contains neural networks to predict disruptions from bolometer d
 
 ### Requirements
 
-- Keras, with Theano or TensorFlow backend
+- Keras 2.1.2, TensorFlow 1.4.1
+
+- Configure `~/.keras/keras.json` as follows:
+
+```
+{
+    "epsilon": 1e-07,
+    "floatx": "float32",
+    "backend": "tensorflow"
+    "image_data_format": "channels_last",
+}
+
+```
 
 ### Instructions
 
