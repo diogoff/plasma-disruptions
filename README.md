@@ -50,4 +50,6 @@ This repository contains neural networks to predict disruptions from bolometer d
 
     - This script will plot the time to disruption and the probability of disruption for each validation pulse.
     
-    - Each plot will be saved in a separate PNG file. Disruptive pulses are marked with the disruption time.
+    - Each plot will be saved to an `images/` folder as separate PNG file.
+    
+    - An output file `dst_pred.hdf` will be created with the output of both networks for each validation pulse.

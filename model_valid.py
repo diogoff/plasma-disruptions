@@ -25,32 +25,38 @@ from keras.models import *
 
 fname = 'prd/model.hdf'
 print('Reading:', fname)
-prd = load_model(fname)
+prd_model = load_model(fname)
 
 fname = 'ttd/model.hdf'
 print('Reading:', fname)
-ttd = load_model(fname)
+ttd_model = load_model(fname)
 
 # ----------------------------------------------------------------------
 
 fname = 'dst_bolo.hdf'
 print('Reading:', fname)
-f = h5py.File(fname, 'r')
+fin = h5py.File(fname, 'r')
+
+fname = 'dst_pred.hdf'
+print('Writing:', fname)
+fout = h5py.File(fname, 'w')
 
 sample_size = 200
 
-for (k, pulse) in enumerate(f):
+for (k, pulse) in enumerate(fin):
 
     if k % 10 == 0:
 
-        dst = f[pulse]['dst'][0]
-        bolo = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
-        bolo_t = f[pulse]['bolo_t'][:]
-        print('%10s %10.4f %10.4f %10.4f %10d' % (pulse,
-                                                  dst,
-                                                  bolo_t[0],
-                                                  bolo_t[-1],
-                                                  bolo_t.shape[0]), end='\t\t')
+        dst = fin[pulse]['dst'][0]
+        bolo = np.clip(fin[pulse]['bolo'][:]/1e6, 0., None)
+        bolo_t = fin[pulse]['bolo_t'][:]
+
+        print('%8s %8.4f %8.4f %8.4f %8d' % (pulse,
+                                             dst,
+                                             bolo_t[0],
+                                             bolo_t[-1],
+                                             bolo_t.shape[0]), end='\t')
+
         X_batch = []
         t_batch = []
         for i in range(sample_size, bolo.shape[0]):
@@ -58,11 +64,23 @@ for (k, pulse) in enumerate(f):
             t = bolo_t[i]
             X_batch.append(x)
             t_batch.append(t)
+
         X_batch = np.array(X_batch, dtype=np.float32)
         t_batch = np.array(t_batch, dtype=np.float32)
-        prd_batch = prd.predict(X_batch, batch_size=X_batch.shape[0], verbose=0)
-        ttd_batch = ttd.predict(X_batch, batch_size=X_batch.shape[0], verbose=0)
-
+        
+        prd_batch = prd_model.predict(X_batch, batch_size=X_batch.shape[0], verbose=0)
+        ttd_batch = ttd_model.predict(X_batch, batch_size=X_batch.shape[0], verbose=0)
+        
+        prd_batch = np.squeeze(prd_batch)
+        ttd_batch = np.squeeze(ttd_batch)
+        
+        g = fout.create_group(pulse)
+        g.create_dataset('dst', data=[dst])
+        g.create_dataset('prd', data=prd_batch)
+        g.create_dataset('ttd', data=ttd_batch)
+        g.create_dataset('prd_t', data=t_batch)
+        g.create_dataset('ttd_t', data=t_batch)
+        
         fig, ax1 = plt.subplots()
 
         ax1.plot(t_batch, ttd_batch, 'b')
@@ -80,7 +98,7 @@ for (k, pulse) in enumerate(f):
         if dst > 0.:
             plt.axvline(x=dst, color='k', linestyle='--')
             plt.title('pulse %s (disruption @ t=%.4fs)' % (pulse, dst))
-            fname = 'images/disruptive/%s_%.4f.png' % (pulse, dst)
+            fname = 'images/disruptive/%s.png' % pulse
         else:
             plt.title('pulse %s' % pulse)
             fname = 'images/non-disruptive/%s.png' % pulse
@@ -89,6 +107,7 @@ for (k, pulse) in enumerate(f):
         plt.savefig(fname)
         plt.cla()
         plt.clf()
-        plt.close()        
+        plt.close()   
 
-f.close()
+fin.close()
+fout.close()
