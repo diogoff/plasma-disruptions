@@ -24,7 +24,7 @@ This repository contains a neural network to predict disruptions from bolometer 
 
 ### Instructions
 
-- Run `dst_bolo.py` to get the disruption time and bolometer data for every pulse.
+- Run `train_data.py` to get the disruption time and bolometer data from every pulse.
 
     - This script will only run on a JET computing cluster (e.g. Freia).
     
@@ -32,7 +32,7 @@ This repository contains a neural network to predict disruptions from bolometer 
 
     - The bolometer data is down-sampled from 5 kHz to 200 Hz (1 sample every 5 ms).
 
-    - An output file `dst_bolo.hdf` will be created.
+    - An output file `train_data.hdf` will be created.
 
 - Run `model_train.py` on each folder (`ttd` and `prd`) to train the corresponding model.
 

@@ -6,9 +6,9 @@ from ppf import *
 
 ppfgo()
 ppfuid('jetppf', 'r')
-ppfssr(i=[0,1,2,3,4])
+ppfssr([0,1,2,3,4])
 
-# -------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------
 
 def get_data(pulse, dda, dtyp):
     ihdata, iwdata, data, x, t, ier = ppfget(pulse, dda, dtyp, reshape=1)
@@ -27,7 +27,7 @@ def get_bolo(pulse):
     bolo_t = kb5h_t
     return bolo, bolo_t
 
-# -------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------
 
 def get_dst(ipla, ipla_t):
     x0 = ipla_t[:-1]
@@ -50,12 +50,12 @@ def get_dst(ipla, ipla_t):
         dst = (lim-b)/m
     return dst
 
-# -------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------
 
 pulse0 = 80128
-pulse1 = 92504
+pulse1 = 93222
 
-fname = 'dst_bolo.hdf'
+fname = 'train_data.hdf'
 print('Writing:', fname)
 f = h5py.File(fname, 'w')
 
