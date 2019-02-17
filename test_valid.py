@@ -45,7 +45,7 @@ sample_size = 200
 
 for (k, pulse) in enumerate(fin):
 
-    if (k+1) % 10 == 0:
+    if k % 10 == 0:
 
         dst = fin[pulse]['dst'][0]
         bolo = np.clip(fin[pulse]['bolo'][:]/1e6, 0., None)

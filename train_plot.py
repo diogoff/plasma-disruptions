@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-fig, ax = plt.subplots(nrows=2, ncols=1)
+fig, ax = plt.subplots(nrows=1, ncols=2)
 
 for (k, fname) in enumerate(['ttd/train.log', 'prd/train.log']):
 
@@ -17,6 +17,8 @@ for (k, fname) in enumerate(['ttd/train.log', 'prd/train.log']):
 
     ax[k].plot(epoch, loss, label='loss')
     ax[k].plot(epoch, val_loss, label='val_loss')
+    
+    ax[k].set_xlabel('epoch')
 
     ax[k].legend()
     ax[k].grid()
@@ -25,8 +27,8 @@ for (k, fname) in enumerate(['ttd/train.log', 'prd/train.log']):
     min_val_loss = val_loss[i]
     min_val_epoch = epoch[i]
 
-    print('min_val_loss:', min_val_loss)
-    print('min_val_epoch:', min_val_epoch)
+    print('min_val_loss: %10.6f' % min_val_loss)
+    print('min_val_epoch: %d' % min_val_epoch)
 
     (x_min, x_max) = ax[k].get_xlim()
     (y_min, y_max) = ax[k].get_ylim()

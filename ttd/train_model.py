@@ -27,7 +27,7 @@ for (k, pulse) in enumerate(f):
                                                     bolo_t[pulse][0],
                                                     bolo_t[pulse][-1],
                                                     bolo_t[pulse].shape[0]), end='')
-        if (k+1) % 10 == 0:
+        if k % 10 == 0:
             valid_pulses.append(pulse)
         else:
             train_pulses.append(pulse)
@@ -172,10 +172,12 @@ class MyCallback(Callback):
 
 # ----------------------------------------------------------------------
 
-batch_size = len(train_pulses)*10
-steps_per_epoch = 10
+batch_size = 2000
+steps_per_epoch = 100
 epochs = 10000
 verbose = 0
+
+print('batch_size:', batch_size)
 
 mc = MyCallback()
 
@@ -187,7 +189,7 @@ try:
                         callbacks=[mc],
                         validation_data=(X_valid, Y_valid),
                         workers=8,
-                        max_queue_size=100,
+                        max_queue_size=200,
                         use_multiprocessing=True)
 
 except KeyboardInterrupt:
