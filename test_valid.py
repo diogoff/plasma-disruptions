@@ -33,11 +33,11 @@ ttd_model = load_model(fname)
 
 # ----------------------------------------------------------------------
 
-fname = 'dst_bolo.hdf'
+fname = 'train_data.hdf'
 print('Reading:', fname)
 fin = h5py.File(fname, 'r')
 
-fname = 'dst_pred.hdf'
+fname = 'test_data.hdf'
 print('Writing:', fname)
 fout = h5py.File(fname, 'w')
 
@@ -45,7 +45,7 @@ sample_size = 200
 
 for (k, pulse) in enumerate(fin):
 
-    if k % 10 == 0:
+    if (k+1) % 10 == 0:
 
         dst = fin[pulse]['dst'][0]
         bolo = np.clip(fin[pulse]['bolo'][:]/1e6, 0., None)
