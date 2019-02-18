@@ -67,7 +67,7 @@ X_valid = []
 Y_valid = []
 
 for pulse in valid_pulses:
-    for i in range(sample_size, bolo[pulse].shape[0] + 1, sample_size/10):
+    for i in range(sample_size, bolo[pulse].shape[0] + 1, sample_size/20):
         x = bolo[pulse][i-sample_size:i]
         y = dst[pulse] - bolo_t[pulse][i-1]
         X_valid.append(x)
@@ -189,7 +189,7 @@ try:
                         callbacks=[mc],
                         validation_data=(X_valid, Y_valid),
                         workers=8,
-                        max_queue_size=200,
+                        max_queue_size=100,
                         use_multiprocessing=True)
 
 except KeyboardInterrupt:
