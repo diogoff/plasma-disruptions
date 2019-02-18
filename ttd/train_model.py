@@ -187,10 +187,7 @@ try:
                         epochs=epochs,
                         verbose=verbose,
                         callbacks=[mc],
-                        validation_data=(X_valid, Y_valid),
-                        workers=4,
-                        max_queue_size=100,
-                        use_multiprocessing=True)
+                        validation_data=(X_valid, Y_valid))
 
 except KeyboardInterrupt:
     print('\nTraining interrupted.')
