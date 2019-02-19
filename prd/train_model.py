@@ -19,8 +19,8 @@ r = np.arange(len(pulses))
 
 N = 10
 
-i_train = ((r % N) >= 2)
-i_valid = ((r % N) == 1)
+i_train = ((r % N) <= N-2)
+i_valid = ((r % N) == N-1)
 
 train_pulses = list(pulses[i_train])
 valid_pulses = list(pulses[i_valid])
