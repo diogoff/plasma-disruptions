@@ -10,14 +10,31 @@ fname = '../train_data.hdf'
 print('Reading:', fname)
 f = h5py.File(fname, 'r')
 
+pulses = np.array(f.keys())
+print('pulses:', len(pulses))
+
+# ----------------------------------------------------------------------
+
+r = np.arange(len(pulses))
+
+N = 10
+
+i_train = ((r % N) >= 2)
+i_valid = ((r % N) == 1)
+
+train_pulses = list(pulses[i_train])
+valid_pulses = list(pulses[i_valid])
+
+print('train_pulses:', len(train_pulses))
+print('valid_pulses:', len(valid_pulses))
+
+# ----------------------------------------------------------------------
+
 dst = dict()
 bolo = dict()
 bolo_t = dict()
 
-train_pulses = []
-valid_pulses = []
-
-for (k, pulse) in enumerate(f):
+for pulse in train_pulses + valid_pulses:
     dst[pulse] = f[pulse]['dst'][0]
     bolo[pulse] = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
     bolo_t[pulse] = f[pulse]['bolo_t'][:]
@@ -26,16 +43,10 @@ for (k, pulse) in enumerate(f):
                                                 bolo_t[pulse][0],
                                                 bolo_t[pulse][-1],
                                                 bolo_t[pulse].shape[0]), end='')
-    if k % 10 == 0:
-        valid_pulses.append(pulse)
-    else:
-        train_pulses.append(pulse)
+
 print()
 
 f.close()
-
-print('train_pulses:', len(train_pulses))
-print('valid_pulses:', len(valid_pulses))
 
 # ----------------------------------------------------------------------
 
@@ -172,8 +183,8 @@ class MyCallback(Callback):
 
 # ----------------------------------------------------------------------
 
-batch_size = 2000
-steps_per_epoch = 100
+batch_size = 500
+steps_per_epoch = 50
 epochs = 10000
 verbose = 0
 
