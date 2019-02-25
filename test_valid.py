@@ -120,16 +120,16 @@ for pulse in valid_pulses:
     
     fig, ax1 = plt.subplots()
 
-    ax1.plot(t_batch, ttd_batch, 'b')
-    ax1.set_xlabel('time (s)')
-    ax1.set_ylabel('ttd', color='b')
-    ax1.tick_params('y', colors='b')
+    ax1.plot(t_batch, ttd_batch, 'C0', linewidth=1.)
+    ax1.set_xlabel('(s)')
+    ax1.set_ylabel('ttd', color='C0')
+    ax1.tick_params('y', colors='C0')
     ax1.set_ylim(0.)
 
     ax2 = ax1.twinx()
-    ax2.plot(t_batch, prd_batch, 'r')
-    ax2.set_ylabel('prd', color='r')
-    ax2.tick_params('y', colors='r')
+    ax2.plot(t_batch, prd_batch, 'C1', linewidth=1.)
+    ax2.set_ylabel('prd', color='C1')
+    ax2.tick_params('y', colors='C1')
     ax2.set_ylim(0., 1.)
 
     if dst > 0.:
