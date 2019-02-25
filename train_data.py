@@ -53,7 +53,7 @@ def get_dst(ipla, ipla_t):
 # ----------------------------------------------------------------------
 
 pulse0 = 80128
-pulse1 = 93222
+pulse1 = 92504
 
 fname = 'train_data.hdf'
 print('Writing:', fname)

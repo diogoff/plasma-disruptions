@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 fig, ax = plt.subplots(nrows=1, ncols=2)
 
-for (k, fname) in enumerate(['ttd/train.log', 'prd/train.log']):
+for (k, fname) in enumerate(['prd/train.log', 'ttd/train.log']):
 
     print('Reading:', fname)
     df = pd.read_csv(fname)
@@ -19,6 +19,7 @@ for (k, fname) in enumerate(['ttd/train.log', 'prd/train.log']):
     ax[k].plot(epoch, val_loss, label='val_loss')
     
     ax[k].set_xlabel('epoch')
+    ax[k].set_title(fname.split('/')[0], fontsize='medium')
 
     ax[k].legend()
     ax[k].grid()
