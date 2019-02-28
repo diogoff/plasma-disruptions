@@ -34,7 +34,7 @@ This repository contains a neural network to predict disruptions from bolometer 
 
     - An output file `train_data.hdf` will be created.
 
-- Run `train_model.py` on each folder (`ttd` and `prd`) to train the corresponding model.
+- Run `train_model.py` on each folder (`prd` and `ttd`) to train the corresponding model.
 
     - Training will finish automatically once the validation loss no longer improves.
     

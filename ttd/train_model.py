@@ -91,24 +91,6 @@ print('Y_valid:', Y_valid.shape, Y_valid.dtype)
 
 # ----------------------------------------------------------------------
 
-import os
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
-
-# ----------------------------------------------------------------------
-
-import tensorflow as tf
-
-config = tf.ConfigProto()
-
-config.gpu_options.allow_growth = True
-
-from keras.backend.tensorflow_backend import set_session
-
-set_session(tf.Session(config=config))
-
-# ----------------------------------------------------------------------
-
 from keras.models import *
 from keras.layers import *
 
@@ -198,7 +180,7 @@ try:
                         verbose=verbose,
                         callbacks=[mc],
                         validation_data=(X_valid, Y_valid),
-                        workers=2,
+                        workers=4,
                         max_queue_size=100,
                         use_multiprocessing=True)
 
