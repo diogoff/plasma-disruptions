@@ -22,10 +22,14 @@ def get_ipla(pulse):
 def get_bolo(pulse):
     kb5h, kb5h_t = get_data(pulse, 'bolo', 'kb5h')
     kb5v, kb5v_t = get_data(pulse, 'bolo', 'kb5v')
+    kb5h[:,19] = 0. # broken channel
+    kb5v[:,15] = 0. # broken channel
+    kb5v[:,22] = 0. # broken channel
+    kb5 = np.hstack((kb5h, kb5v))
+    kb5 = np.clip(kb5, 0., None) / 1e6 # clip and scale
     assert np.all(kb5h_t == kb5v_t)
-    bolo = np.hstack((kb5h, kb5v))
-    bolo_t = kb5h_t
-    return bolo, bolo_t
+    kb5_t = kb5h_t
+    return kb5, kb5_t
 
 # ----------------------------------------------------------------------
 
