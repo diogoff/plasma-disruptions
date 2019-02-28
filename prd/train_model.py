@@ -36,7 +36,7 @@ bolo_t = dict()
 
 for pulse in train_pulses + valid_pulses:
     dst[pulse] = f[pulse]['dst'][0]
-    bolo[pulse] = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
+    bolo[pulse] = f[pulse]['bolo'][:]
     bolo_t[pulse] = f[pulse]['bolo_t'][:]
     print('\r%10s %10.4f %10.4f %10.4f %10d' % (pulse,
                                                 dst[pulse],
