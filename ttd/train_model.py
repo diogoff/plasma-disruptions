@@ -164,7 +164,7 @@ class MyCallback(Callback):
 
 # ----------------------------------------------------------------------
 
-batch_size = 2000
+batch_size = 500
 steps_per_epoch = 50
 epochs = 10000
 verbose = 0
