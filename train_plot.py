@@ -19,7 +19,10 @@ for (k, fname) in enumerate(['prd/train.log', 'ttd/train.log']):
     ax[k].plot(epoch, val_loss, label='val_loss')
     
     ax[k].set_xlabel('epoch')
-    ax[k].set_title(fname.split('/')[0], fontsize='medium')
+    if fname.startswith('prd'):
+        ax[k].set_title('probability of disruption', fontsize='medium')
+    else:
+        ax[k].set_title('time to disruption', fontsize='medium')
 
     ax[k].legend()
     ax[k].grid()

@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import sys
 import h5py
 import numpy as np
 import matplotlib.pyplot as plt
@@ -7,14 +8,30 @@ np.random.seed(0)
 
 # ----------------------------------------------------------------------
 
+if len(sys.argv) < 4:
+    print('Usage: %s pulse t0 t1' % sys.argv[0])
+    print('Example: %s 92213 48.0 54.0' % sys.argv[0])
+    exit()
+
+# ----------------------------------------------------------------------
+
+pulse = sys.argv[1]
+print('pulse:', pulse)
+
+t0 = float(sys.argv[2])
+print('t0:', t0)
+
+t1 = float(sys.argv[3])
+print('t1:', t1)
+
+# ----------------------------------------------------------------------
+
 fname = 'train_data.hdf'
 print('Reading:', fname)
 f = h5py.File(fname, 'r')
 
-pulse = str(92213)
-
 dst = f[pulse]['dst'][0]
-bolo = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
+bolo = f[pulse]['bolo'][:]
 bolo_t = f[pulse]['bolo_t'][:]
 
 print('dst:', dst)
@@ -25,11 +42,12 @@ f.close()
 
 # ----------------------------------------------------------------------
 
-t0 = 48.6
-t1 = 54.0
-
 i0 = np.argmin(np.fabs(bolo_t - t0))
 i1 = np.argmin(np.fabs(bolo_t - t1))
+
+i0 -= sample_size
+if i0 < 0:
+    i0 = 0
 
 bolo = bolo[i0:i1+1]
 bolo_t = bolo_t[i0:i1+1]
@@ -78,6 +96,11 @@ ttd_pred = np.squeeze(ttd_pred)
 
 print('prd_pred:', prd_pred.shape, prd_pred.dtype)
 print('ttd_pred:', ttd_pred.shape, ttd_pred.dtype)
+
+# ----------------------------------------------------------------------
+
+for i in range(X_pred.shape[0]):
+    print('%10.4f %10.6f %10.6f' % (t_pred[i], prd_pred[i], ttd_pred[i]))
 
 # ----------------------------------------------------------------------
 

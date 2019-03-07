@@ -45,24 +45,6 @@ for d in dirs:
 
 # ----------------------------------------------------------------------
 
-import os
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'
-
-# ----------------------------------------------------------------------
-
-import tensorflow as tf
-
-config = tf.ConfigProto()
-
-config.gpu_options.allow_growth = True
-
-from keras.backend.tensorflow_backend import set_session
-
-set_session(tf.Session(config=config))
-
-# ----------------------------------------------------------------------
-
 from keras.models import *
 
 fname = 'prd/model.hdf'
@@ -84,7 +66,7 @@ sample_size = 200
 for pulse in valid_pulses:
 
     dst = f[pulse]['dst'][0]
-    bolo = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
+    bolo = f[pulse]['bolo'][:]
     bolo_t = f[pulse]['bolo_t'][:]
 
     print('%8s %8.4f %8.4f %8.4f %8d' % (pulse,

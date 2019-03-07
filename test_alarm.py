@@ -25,6 +25,8 @@ fname = 'test_valid.hdf'
 print('Reading:', fname)
 f = h5py.File(fname, 'r')
 
+print('pulses:', len(f))
+
 # ----------------------------------------------------------------------
 
 TP = 0
@@ -71,11 +73,19 @@ print('FN: %3d (%5.2f%%)' % (FN, float(FN) / float(len(f)) * 100.))
 
 # ----------------------------------------------------------------------
 
-success_rate = np.mean(success_rate) * 100.
-warning_time = np.mean(warning_time) * 1000.
+precision = float(TP) / float(TP + FP)
+recall = float(TP) / float(TP + FN)
+f_measure = 2. * precision * recall / (precision + recall)
 
-print('success_rate: %6.2f%%' % success_rate)
-print('warning_time: %5.1f ms' % warning_time)
+print('precision: %6.2f' % (precision*100.))
+print('recall:    %6.2f' % (recall*100.))
+print('f_measure: %6.2f' % (f_measure*100.))
+
+success_rate = np.mean(success_rate)
+warning_time = np.mean(warning_time)
+
+print('success_rate: %6.2f%%' % (success_rate*100.))
+print('warning_time: %5.1f ms' % (warning_time*1000.))
 
 # ----------------------------------------------------------------------
 

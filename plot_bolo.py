@@ -14,7 +14,7 @@ f = h5py.File(fname, 'r')
 pulse = str(92213)
 
 dst = f[pulse]['dst'][0]
-bolo = np.clip(f[pulse]['bolo'][:]/1e6, 0., None)
+bolo = f[pulse]['bolo'][:]
 bolo_t = f[pulse]['bolo_t'][:]
 
 print('dst:', dst)
@@ -40,22 +40,7 @@ print('time:', time)
 
 # ----------------------------------------------------------------------
 
-channels = []
-
-for j in range(bolo.shape[1]):
-    if np.max(bolo[:,j]) == 0.:
-        continue
-    if np.max(bolo[:,j]) == np.max(bolo):
-        continue
-    channels.append(j)
-
-channels = np.array(channels)
-
-print('channels:', channels)
-
-# ----------------------------------------------------------------------
-
-plt.plot(bolo_t[time], bolo[time][:,channels], linewidth=1.)
+plt.plot(bolo_t[time], bolo[time], linewidth=1.)
 
 plt.xlabel('(s)')
 plt.ylabel('(MW m$^{-2}$)')
