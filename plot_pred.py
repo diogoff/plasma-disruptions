@@ -42,10 +42,12 @@ f.close()
 
 # ----------------------------------------------------------------------
 
+sample_size = 200
+
 i0 = np.argmin(np.fabs(bolo_t - t0))
 i1 = np.argmin(np.fabs(bolo_t - t1))
 
-i0 -= sample_size
+i0 -= sample_size-1
 if i0 < 0:
     i0 = 0
 
@@ -68,8 +70,6 @@ print('Reading:', fname)
 ttd_model = load_model(fname)
 
 # ----------------------------------------------------------------------
-
-sample_size = 200
 
 X_pred = []
 t_pred = []
@@ -100,7 +100,7 @@ print('ttd_pred:', ttd_pred.shape, ttd_pred.dtype)
 # ----------------------------------------------------------------------
 
 for i in range(X_pred.shape[0]):
-    print('%10.4f %10.6f %10.6f' % (t_pred[i], prd_pred[i], ttd_pred[i]))
+    print('%10.4f %10.3f %10.3f' % (t_pred[i], prd_pred[i], ttd_pred[i]))
 
 # ----------------------------------------------------------------------
 
