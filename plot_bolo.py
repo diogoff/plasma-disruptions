@@ -54,8 +54,8 @@ plt.plot(bolo_t[ii], bolo[ii])
 
 # ----------------------------------------------------------------------
 
-t0 = 48.0
-t1 = 53.5
+t0 = 52.4
+t1 = 53.4
 
 maxima = []
 for j in range(bolo.shape[1]):
@@ -69,10 +69,10 @@ for j in range(bolo.shape[1]):
             i_max = i
     maxima.append(i_max)
 
-maxima = sorted([(maxima[j], j) for j in range(len(maxima)) if bolo[maxima[j],j] > 1.])
+maxima = sorted([(maxima[j], j) for j in range(len(maxima)) if bolo[maxima[j],j] > 0.7])
 
-x_pos = np.linspace(t0+0.5, t1-0.5, len(maxima))
-y_pos = np.linspace(2.5, 17.5, len(maxima))
+x_pos = np.linspace(49.5, 52.5, len(maxima))
+y_pos = np.linspace(7.5, 15., len(maxima))
 
 for k, (i, j) in enumerate(maxima):
     x0 = bolo_t[i]
