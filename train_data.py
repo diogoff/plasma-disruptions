@@ -1,7 +1,9 @@
 from __future__ import print_function
 
 import h5py
+import sqlite3
 import numpy as np
+import pandas as pd
 from ppf import *
 
 ppfgo()
@@ -15,9 +17,6 @@ def get_data(pulse, dda, dtyp):
     if (ier != 0) or (len(data) < 2) or (len(t) < 2):
         raise ValueError
     return data, t
-
-def get_ipla(pulse):
-    return get_data(pulse, 'magn', 'ipla')
 
 def get_bolo(pulse):
     kb5h, kb5h_t = get_data(pulse, 'bolo', 'kb5h')
@@ -33,44 +32,39 @@ def get_bolo(pulse):
 
 # ----------------------------------------------------------------------
 
-def get_dst(ipla, ipla_t):
-    x0 = ipla_t[:-1]
-    x1 = ipla_t[1:]
-    y0 = ipla[:-1]
-    y1 = ipla[1:]
-    grad = (y1-y0)/(x1-x0)
-    grad_t = (x0+x1)/2.
-    dst = 0.
-    lim = 20e6 # 20 MA/s
-    pos = np.where(grad > lim)[0]
-    if len(pos) > 0:
-        i = pos[0]
-        x0 = grad_t[i-1]
-        x1 = grad_t[i]
-        y0 = grad[i-1]
-        y1 = grad[i]
-        m = (y1-y0)/(x1-x0)
-        b = (y0*x1-y1*x0)/(x1-x0)
-        dst = (lim-b)/m
-    return dst
+pulse0 = 80128
+pulse1 = 92504
 
 # ----------------------------------------------------------------------
 
-pulse0 = 80128
-pulse1 = 92504
+fname = '/home/DISRUPT/DisruptionDatabase/Database/DDB.db'
+print('Reading:', fname)
+conn = sqlite3.connect(fname)
+
+sql = 'SELECT id, dTime, deliberate FROM JETDDB WHERE id >= %d AND id <= %d' % (pulse0, pulse1)
+
+print('sql:', sql)
+
+df = pd.read_sql_query(sql, conn, index_col='id')
+
+# ----------------------------------------------------------------------
 
 fname = 'train_data.hdf'
 print('Writing:', fname)
 f = h5py.File(fname, 'w')
 
 for pulse in range(pulse0, pulse1+1):
+
+    dst = 0.
+    if pulse in df.index:
+        if df.loc[pulse,'deliberate'] == 1:
+            continue
+        dst = df.loc[pulse,'dTime']
+
     try:
-        ipla, ipla_t = get_ipla(pulse)
         bolo, bolo_t = get_bolo(pulse)
     except ValueError:
         continue
-
-    dst = get_dst(ipla, ipla_t)
 
     t = 40.
     i = np.argmin(np.fabs(bolo_t - t))
