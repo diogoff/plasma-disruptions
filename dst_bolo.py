@@ -47,9 +47,12 @@ print('sql:', sql)
 
 df = pd.read_sql_query(sql, conn, index_col='id')
 
+print(df)
+exit()
+
 # ----------------------------------------------------------------------
 
-fname = 'train_data.hdf'
+fname = 'dst_bolo.hdf'
 print('Writing:', fname)
 f = h5py.File(fname, 'w')
 
