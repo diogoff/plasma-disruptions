@@ -11,7 +11,7 @@ for (k, fname) in enumerate(['prd/train.log', 'ttd/train.log']):
     print('Reading:', fname)
     df = pd.read_csv(fname)
 
-    epoch = df['epoch'].values
+    epoch = df['epoch'].values + 1
     loss = df['loss'].values
     val_loss = df['val_loss'].values
 
@@ -21,8 +21,10 @@ for (k, fname) in enumerate(['prd/train.log', 'ttd/train.log']):
     ax[k].set_xlabel('epoch')
     if fname.startswith('prd'):
         ax[k].set_title('probability of disruption', fontsize='medium')
+        ax[k].set_ylabel('binary cross-entropy')
     else:
         ax[k].set_title('time to disruption', fontsize='medium')
+        ax[k].set_ylabel('mean absolute percentage error')
 
     ax[k].legend()
     ax[k].grid()

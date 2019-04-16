@@ -6,27 +6,30 @@ np.random.seed(0)
 
 # ----------------------------------------------------------------------
 
-fname = '../train_data.hdf'
+fname = '../dst_bolo.hdf'
 print('Reading:', fname)
 f = h5py.File(fname, 'r')
 
-pulses = np.array(list(f.keys()))
+pulses = np.array(sorted(f.keys()))
 print('pulses:', len(pulses))
 
 # ----------------------------------------------------------------------
 
-r = np.arange(len(pulses))
-
 N = 10
 
-i_train = ((r % N) >= 1)
-i_valid = ((r % N) == 0)
+r = np.arange(len(pulses))
+
+i_train = r[(r % N) <= N-3]
+i_valid = r[(r % N) == N-2]
+i_test = r[(r % N) == N-1]
 
 train_pulses = [pulse for pulse in pulses[i_train] if f[pulse]['dst'][0] > 0.]
 valid_pulses = [pulse for pulse in pulses[i_valid] if f[pulse]['dst'][0] > 0.]
+test_pulses = [pulse for pulse in pulses[i_test] if f[pulse]['dst'][0] > 0.]
 
 print('train_pulses:', len(train_pulses))
 print('valid_pulses:', len(valid_pulses))
+print('test_pulses:', len(test_pulses))
 
 # ----------------------------------------------------------------------
 
@@ -120,7 +123,7 @@ from keras.optimizers import *
 
 opt = Adam(lr=1e-4)
 
-model.compile(optimizer=opt, loss='mae')
+model.compile(optimizer=opt, loss='mape')
 
 # ----------------------------------------------------------------------
 
@@ -136,7 +139,7 @@ class MyCallback(Callback):
         print('Writing:', fname)
         self.log = open(fname, 'w')
         print('%-10s %10s %10s %10s' % ('time', 'epoch', 'loss', 'val_loss'))
-        self.log.write('epoch,loss,val_loss\n')
+        self.log.write('time,epoch,loss,val_loss\n')
         self.log.flush()
         
     def on_epoch_end(self, epoch, logs=None):
@@ -150,9 +153,9 @@ class MyCallback(Callback):
             print('%-10s %10d %10.6f %10.6f *' % (t, epoch, loss, val_loss))
         else:
             print('%-10s %10d %10.6f %10.6f' % (t, epoch, loss, val_loss))
-        self.log.write('%d,%f,%f\n' % (epoch, loss, val_loss))
+        self.log.write('%s,%d,%f,%f\n' % (t,epoch, loss, val_loss))
         self.log.flush()
-        if epoch > 2*self.min_val_epoch:
+        if (epoch > 100) and (epoch > 2*self.min_val_epoch):
             print('Stop training.')
             self.model.stop_training = True
 
