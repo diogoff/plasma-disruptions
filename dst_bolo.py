@@ -12,15 +12,9 @@ ppfssr([0,1,2,3,4])
 
 # ----------------------------------------------------------------------
 
-def get_data(pulse, dda, dtyp):
-    ihdata, iwdata, data, x, t, ier = ppfget(pulse, dda, dtyp, reshape=1)
-    if (ier != 0) or (len(data) < 2) or (len(t) < 2):
-        raise ValueError
-    return data, t
-
 def get_bolo(pulse):
-    kb5h, kb5h_t = get_data(pulse, 'bolo', 'kb5h')
-    kb5v, kb5v_t = get_data(pulse, 'bolo', 'kb5v')
+    ihdata, iwdata, kb5h, x, kb5h_t, ier = ppfget(pulse, 'bolo', 'kb5h', reshape=1)
+    ihdata, iwdata, kb5v, x, kb5v_t, ier = ppfget(pulse, 'bolo', 'kb5v', reshape=1)
     kb5h[:,19] = 0. # broken channel
     kb5v[:,15] = 0. # broken channel
     kb5v[:,22] = 0. # broken channel
@@ -32,23 +26,15 @@ def get_bolo(pulse):
 
 # ----------------------------------------------------------------------
 
-pulse0 = 80128
-pulse1 = 92504
-
-# ----------------------------------------------------------------------
-
 fname = '/home/DISRUPT/DisruptionDatabase/Database/DDB.db'
 print('Reading:', fname)
 conn = sqlite3.connect(fname)
 
-sql = 'SELECT id, dTime, deliberate FROM JETDDB WHERE id >= %d AND id <= %d' % (pulse0, pulse1)
-
+sql = 'SELECT id, dTime FROM JETDDB WHERE id>=80128 AND id<=92504 AND deliberate=0'
 print('sql:', sql)
 
-df = pd.read_sql_query(sql, conn, index_col='id')
-
-print(df)
-exit()
+df = pd.read_sql_query(sql, conn)
+print('df:', df.shape)
 
 # ----------------------------------------------------------------------
 
@@ -56,17 +42,14 @@ fname = 'dst_bolo.hdf'
 print('Writing:', fname)
 f = h5py.File(fname, 'w')
 
-for pulse in range(pulse0, pulse1+1):
+for row in df.itertuples():
 
-    dst = 0.
-    if pulse in df.index:
-        if df.loc[pulse,'deliberate'] == 1:
-            continue
-        dst = df.loc[pulse,'dTime']
+    pulse = row.id
+    dst = row.dTime
 
     try:
         bolo, bolo_t = get_bolo(pulse)
-    except ValueError:
+    except:
         continue
 
     t = 40.
