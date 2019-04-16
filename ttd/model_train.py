@@ -123,7 +123,7 @@ from keras.optimizers import *
 
 opt = Adam(lr=1e-4)
 
-model.compile(optimizer=opt, loss='mape')
+model.compile(optimizer=opt, loss='mae')
 
 # ----------------------------------------------------------------------
 

@@ -24,7 +24,7 @@ for (k, fname) in enumerate(['prd/train.log', 'ttd/train.log']):
         ax[k].set_ylabel('binary cross-entropy')
     else:
         ax[k].set_title('time to disruption', fontsize='medium')
-        ax[k].set_ylabel('mean absolute percentage error')
+        ax[k].set_ylabel('mean absolute error (s)')
 
     ax[k].legend()
     ax[k].grid()
