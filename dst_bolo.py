@@ -26,14 +26,17 @@ def get_bolo(pulse):
 
 # ----------------------------------------------------------------------
 
+pulse0 = 80128
+pulse1 = 92504
+
 fname = '/home/DISRUPT/DisruptionDatabase/Database/DDB.db'
 print('Reading:', fname)
 conn = sqlite3.connect(fname)
 
-sql = 'SELECT id, dTime FROM JETDDB WHERE id>=80128 AND id<=92504 AND deliberate=0'
+sql = 'SELECT id, dTime, deliberate FROM JETDDB WHERE id>=%d AND id<=%d' % (pulse0, pulse1)
 print('sql:', sql)
 
-df = pd.read_sql_query(sql, conn)
+df = pd.read_sql_query(sql, conn, index_col='id')
 print('df:', df.shape)
 
 # ----------------------------------------------------------------------
@@ -42,11 +45,14 @@ fname = 'dst_bolo.hdf'
 print('Writing:', fname)
 f = h5py.File(fname, 'w')
 
-for row in df.itertuples():
-
-    pulse = row.id
-    dst = row.dTime
-
+for pulse in range(pulse0, pulse1+1):
+    
+    dst = 0.
+    if (pulse in df.index):
+        if df.loc[pulse,'deliberate'] == 1:
+            continue
+        dst = df.loc[pulse,'dTime']
+            
     try:
         bolo, bolo_t = get_bolo(pulse)
     except:
