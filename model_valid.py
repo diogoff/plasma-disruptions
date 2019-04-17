@@ -10,27 +10,30 @@ import matplotlib.pyplot as plt
 
 # ----------------------------------------------------------------------
 
-fname = 'train_data.hdf'
+fname = 'dst_bolo.hdf'
 print('Reading:', fname)
 f = h5py.File(fname, 'r')
 
-pulses = np.array(list(f.keys()))
+pulses = np.array(sorted(f.keys()))
 print('pulses:', len(pulses))
 
 # ----------------------------------------------------------------------
 
-r = np.arange(len(pulses))
-
 N = 10
 
-i_train = ((r % N) >= 1)
-i_valid = ((r % N) == 0)
+r = np.arange(len(pulses))
 
-train_pulses = list(pulses[i_train])
-valid_pulses = list(pulses[i_valid])
+i_train = r[(r % N) <= N-3]
+i_valid = r[(r % N) == N-2]
+i_test = r[(r % N) == N-1]
+
+train_pulses = [pulse for pulse in pulses[i_train]]
+valid_pulses = [pulse for pulse in pulses[i_valid]]
+test_pulses = [pulse for pulse in pulses[i_test]]
 
 print('train_pulses:', len(train_pulses))
 print('valid_pulses:', len(valid_pulses))
+print('test_pulses:', len(test_pulses))
 
 # ----------------------------------------------------------------------
 
@@ -57,7 +60,7 @@ ttd_model = load_model(fname)
 
 # ----------------------------------------------------------------------
 
-fname = 'test_valid.hdf'
+fname = 'dst_pred.hdf'
 print('Writing:', fname)
 fout = h5py.File(fname, 'w')
 
@@ -68,7 +71,6 @@ for pulse in valid_pulses:
     dst = f[pulse]['dst'][0]
     bolo = f[pulse]['bolo'][:]
     bolo_t = f[pulse]['bolo_t'][:]
-
     print('%8s %8.4f %8.4f %8.4f %8d' % (pulse,
                                          dst,
                                          bolo_t[0],
@@ -87,12 +89,18 @@ for pulse in valid_pulses:
     X_batch = np.array(X_batch, dtype=np.float32)
     t_batch = np.array(t_batch, dtype=np.float32)
     
+    print('X_batch:', X_batch.shape, X_batch.dtype)
+    print('t_batch:', t_batch.shape, t_batch.dtype)
+    
     prd_batch = prd_model.predict(X_batch, batch_size=X_batch.shape[0], verbose=0)
     ttd_batch = ttd_model.predict(X_batch, batch_size=X_batch.shape[0], verbose=0)
     
     prd_batch = np.squeeze(prd_batch)
     ttd_batch = np.squeeze(ttd_batch)
     
+    print('prd_batch:', prd_batch.shape, prd_batch.dtype)
+    print('ttd_batch:', ttd_batch.shape, ttd_batch.dtype)
+
     g = fout.create_group(pulse)
     g.create_dataset('dst', data=[dst])
     g.create_dataset('prd', data=prd_batch)

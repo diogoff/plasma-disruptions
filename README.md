@@ -8,7 +8,7 @@ This repository contains a neural network to predict disruptions from bolometer 
 
 ### Requirements
 
-- Keras 2.1.2, TensorFlow 1.4.1
+- Keras 2.1.2, TensorFlow 1.4.1 (minimum)
 
 - Configure `~/.keras/keras.json` as follows:
 
@@ -24,17 +24,17 @@ This repository contains a neural network to predict disruptions from bolometer 
 
 ### Instructions
 
-- Run `train_data.py` to get the disruption time and bolometer data from every pulse.
+- Run `dst_bolo.py` to get the disruption time and bolometer data from every pulse.
 
     - This script will only run on a JET computing cluster (e.g. Freia).
     
-    - The disruption time is defined as the moment when the current gradient reaches 20 MA/s. For non-disruptive pulses, the disruption time is zero.
+    - The disruption time is is obtained from the JET disruption database.
 
     - The bolometer data is down-sampled from 5 kHz to 200 Hz (1 sample every 5 ms).
 
-    - An output file `train_data.hdf` will be created.
+    - An output file `dst_bolo.hdf` will be created.
 
-- Run `train_model.py` on each folder (`prd` and `ttd`) to train the corresponding model.
+- Run `model_train.py` on each folder (`prd` and `ttd`) to train the corresponding model.
 
     - Training will finish automatically once the validation loss no longer improves.
     
@@ -42,14 +42,14 @@ This repository contains a neural network to predict disruptions from bolometer 
     
     - A log file with the loss and validation loss will be saved to `train.log`.
 
-- During training, run `train_plot.py` to see how the loss and validation loss are evolving.
+- During training, run `plot_train.py` to see how the loss and validation loss are evolving.
 
     - The script will also indicate the epoch where the minimum validation loss was achieved.
 
-- After training both models, run `test_valid.py` to test the models on the validation set.
+- After training both models, run `model_valid.py` to test the models on the validation and test sets.
 
-    - This script will plot the time to disruption and the probability of disruption for each validation pulse.
+    - This script will plot the time to disruption and the probability of disruption for each test pulse.
     
     - Each plot will be saved to an `images/` folder as separate PNG file.
     
-    - An output file `test_data.hdf` will be created with the output of both networks for each validation pulse.
+    - An output file `dst_pred.hdf` will be created with the output of both networks for each validation pulse.
