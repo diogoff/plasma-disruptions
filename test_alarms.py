@@ -21,7 +21,7 @@ print('ttd_limit: %.2f' % ttd_limit)
 
 # ----------------------------------------------------------------------
 
-fname = 'test_valid.hdf'
+fname = 'dst_pred.hdf'
 print('Reading:', fname)
 f = h5py.File(fname, 'r')
 

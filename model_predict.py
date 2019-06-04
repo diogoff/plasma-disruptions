@@ -66,7 +66,7 @@ fout = h5py.File(fname, 'w')
 
 sample_size = 200
 
-for pulse in valid_pulses:
+for pulse in test_pulses:
 
     dst = f[pulse]['dst'][0]
     bolo = f[pulse]['bolo'][:]
@@ -75,7 +75,7 @@ for pulse in valid_pulses:
                                          dst,
                                          bolo_t[0],
                                          bolo_t[-1],
-                                         bolo_t.shape[0]), end='\t')
+                                         bolo_t.shape[0]))
 
     X_batch = []
     t_batch = []
@@ -111,8 +111,8 @@ for pulse in valid_pulses:
     fig, ax1 = plt.subplots()
 
     ax1.plot(t_batch, ttd_batch, 'C0', linewidth=1.)
-    ax1.set_xlabel('(s)')
-    ax1.set_ylabel('ttd', color='C0')
+    ax1.set_xlabel('t (s)')
+    ax1.set_ylabel('ttd (s)', color='C0')
     ax1.tick_params('y', colors='C0')
     ax1.set_ylim(0.)
 

@@ -26,7 +26,7 @@ print('t1:', t1)
 
 # ----------------------------------------------------------------------
 
-fname = 'train_data.hdf'
+fname = 'dst_bolo.hdf'
 print('Reading:', fname)
 f = h5py.File(fname, 'r')
 
@@ -107,18 +107,22 @@ for i in range(X_pred.shape[0]):
 fig, ax1 = plt.subplots()
 
 ax1.plot(t_pred, ttd_pred, 'C0', linewidth=1.)
-ax1.axhline(y=1.5, color='C0', linestyle=':')
+#ax1.axhline(y=1.5, color='C0', linestyle=':')
 #xlim = ax1.get_xlim()
 #ax1.fill_between([0., 100.], 0, 1.5, color='C0', alpha=0.15)
 #ax1.set_xlim(xlim)
-ax1.set_xlabel('time (s)')
+ax1.set_xlabel('t (s)')
 ax1.set_ylabel('ttd (s)', color='C0')
+if dst > 0.:
+    ax1.set_title('pulse %s (disruption @ t=%.2fs)' % (pulse, dst), fontsize='medium')
+else:
+    ax1.set_title('pulse %s (non-disruptive)' % pulse, fontsize='medium')
 ax1.tick_params('y', colors='C0')
 ax1.set_ylim(0.)
 
 ax2 = ax1.twinx()
 ax2.plot(t_pred, prd_pred, 'C1', linewidth=1.)
-ax2.axhline(y=0.85, color='C1', linestyle=':')
+#ax2.axhline(y=0.85, color='C1', linestyle=':')
 #xlim = ax2.get_xlim()
 #ax2.fill_between([0., 100.], 0.85, 1., color='C1', alpha=0.15)
 #ax2.set_xlim(xlim)
